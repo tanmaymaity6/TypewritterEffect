@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const TypewriterEffect = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
