@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 
 const TypewriterEffect = () => {
+  const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const intervalRef = useRef(null);
 
@@ -12,7 +13,7 @@ const TypewriterEffect = () => {
       intervalRef.current = null;
     }
 
-    const sentence = new FormData(e.target).get("sentence") || "";
+    const sentence = input; // <-- FIXED: remove FormData
     setOutput("");
 
     intervalRef.current = setInterval(() => {
@@ -24,17 +25,21 @@ const TypewriterEffect = () => {
         return prev + sentence[prev.length];
       });
     }, 500);
-    console.log(sentence);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
-        <input type="text" name="sentence" placeholder="Type a sentence" style={{ width: "300px" }} />
+      <form onSubmit={handleSubmit}>
+        <input
+          name="sentence"
+          placeholder="Type a sentence"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
         <button type="submit">Display with typewriter effect</button>
       </form>
 
-      <p>{output}</p>
+      <p data-testid="output">{output}</p>
     </div>
   );
 };
